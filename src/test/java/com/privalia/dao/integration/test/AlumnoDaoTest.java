@@ -31,7 +31,7 @@ public class AlumnoDaoTest {
 		
 		AlumnoDao alumnoDao = new AlumnoDao();
 		Alumno alumnoDevuelto = alumnoDao.add(alumnoEnviado);
-		boolean resultado=alumnoDevuelto.equals(alumnoEsperado);
+		boolean resultado = alumnoDevuelto.equals(alumnoEsperado);
 		assertTrue(resultado);
 				
 
@@ -60,8 +60,8 @@ public class AlumnoDaoTest {
 				
 				Alumno alumnoEsperado1 = new Alumno();
 				alumnoEsperado1.setIdAlumno(3);
-				alumnoEsperado1.setNombre("Pepe");
-				alumnoEsperado1.setApellidos("Soto");
+				alumnoEsperado1.setNombre("Neus");
+				alumnoEsperado1.setApellidos("Sabater");
 				alumnoEsperado1.setDni("454545454x");
 				
 		        return new Object[]{

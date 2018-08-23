@@ -29,7 +29,7 @@ public class AlumnoDao implements IDao<Alumno>{
 		try {
 	
 			fileWriter = new FileWriter(PATH, true);
-			fileWriter.write(alumno.toString());
+			fileWriter.write(alumno.toString().concat("\n"));
 			
 			
 		}catch(Exception e) {
@@ -52,7 +52,6 @@ public class AlumnoDao implements IDao<Alumno>{
 		
 		BufferedReader buffredReader = null;
 		Alumno alumno = new Alumno();
-		boolean alumnoFound = false;
 		
 		try {
 			buffredReader = new BufferedReader(new FileReader(PATH));
