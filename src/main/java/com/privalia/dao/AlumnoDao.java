@@ -1,106 +1,87 @@
 package com.privalia.dao;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
+
 import com.privalia.common.Alumno;
 import com.privalia.util.FileManager;
 
-public class AlumnoDao implements IDao<Alumno> {
-
-	public BufferedWriter bufferedWriter = null;
-	public FileManager fileManager = null;
-	public BufferedReader bufferedReader = null;
-	public static StringBuilder stringBuilder = new StringBuilder();
-	public static String archive = null;
-
+public class AlumnoDao implements IDao<Alumno>{
+	
+	static String PATH = null;
 	static {
-		if (!FileManager.existFile(FileManager.FILENAME)) {
-			FileManager.createFile(FileManager.FILENAME);
-		} else {
-			System.out.println("Achivo ya creado");
-		}
-	}
-
-	public AlumnoDao() {
-		fileManager = new FileManager();
-	}
-
-	public Alumno add(Alumno alumno) throws IOException {
-
-		alumno.setIdAlumno(1);
-		alumno.setNombre("Ruben");
-		alumno.setApellidos("Fernandez");
-		alumno.setDni("48856785I");
-
-		FileWriter fileWriter = null;
-		BufferedWriter bufferedWriter = null;
-
-		try {
-			fileWriter = new FileWriter(FileManager.FILENAME, true);
-			bufferedWriter = new BufferedWriter(fileWriter);
-			bufferedWriter.append(alumno.toString()).append("\n");
+		PATH = "alumnos.txt";
+		if(!FileManager.fileExist(PATH)){
 			
-			bufferedWriter.newLine();
-
-		} catch (IOException e) {
-			System.out.println(stringBuilder.append("Error: ").append(e));
-		} finally {
-
-			if (fileWriter != null) {
-				fileWriter.close();
-			}
-
-			if (bufferedWriter != null) {
-				bufferedWriter.close();
-			}
-
+			FileManager.createFile(PATH);
+			
 		}
-
-		return getLastAlumnoById(alumno.getIdAlumno());
-
 	}
+	
 
-	private Alumno getLastAlumnoById(int idAlumno) throws IOException {
-
-		BufferedReader bufferedReader = null;
-		Alumno alumnoParts = null;
-
+	public Alumno add(Alumno alumno) throws IOException{
+		
+		FileWriter fileWriter = null;
+			
 		try {
-			bufferedReader = new BufferedReader(new FileReader(FileManager.FILENAME));
-
-			String line = "";
-			String[] alumno = null;
-
-			while ((bufferedReader.readLine()) != null) {
-
-				line = bufferedReader.readLine();
-
-				alumno = line.split(",", 4);
-
-				if (Integer.parseInt(alumno[0]) == idAlumno) {
+	
+			fileWriter = new FileWriter(PATH, true);
+			fileWriter.write(alumno.toString());
+			
+			
+		}catch(Exception e) {
+				
+				System.out.println("Ha fallado la inserción");
+				throw e;
+		}
+		finally {
+			
+			if(fileWriter != null) {
+					
+				fileWriter.close();
+					
+			}
+		}
+		return getLastAlumnoByID(alumno.getIdAlumno());
+	}
+	
+	private Alumno getLastAlumnoByID(int id) throws IOException {
+		
+		BufferedReader buffredReader = null;
+		Alumno alumno = new Alumno();
+		boolean alumnoFound = false;
+		
+		try {
+			buffredReader = new BufferedReader(new FileReader(PATH));
+			String linea;
+		
+			while ((linea = buffredReader.readLine()) != null){
+			
+				String [] datos = linea.split("," , 4);
+				if(datos[0].equals(String.valueOf(id))) {
+					
+					alumno.setIdAlumno(id);
+					alumno.setNombre(datos[1]);
+					alumno.setApellidos(datos[2]);
+					alumno.setDni(datos[3]);
 					break;
 				}
+				
 			}
 
-			alumnoParts = new Alumno(Integer.parseInt(alumno[0]), alumno[1], alumno[2], alumno[3]);
-
-		} catch (IOException ex) {
-			System.out.println("Mensaje de la excepción: " + ex.getMessage());
-			throw ex;
-		} finally {
-
-			if (bufferedReader != null) {
-				bufferedReader.close();
-			}
+		}catch(IOException e) {
+			
+			System.out.println("Error");
+			throw e;
+			
+		}finally {
+			
+			buffredReader.close();
 		}
-
-		return alumnoParts;
-
+		
+		return alumno;
 	}
-	
-	
-
 }

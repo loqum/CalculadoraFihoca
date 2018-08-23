@@ -1,8 +1,6 @@
 package com.privalia.common;
 
-import lombok.Data;
-
-public @Data class Alumno {
+public class Alumno {
 	
 	private int idAlumno;
 	private String nombre;

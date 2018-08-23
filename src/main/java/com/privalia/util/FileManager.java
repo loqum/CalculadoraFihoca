@@ -1,21 +1,20 @@
+
 package com.privalia.util;
 
 import java.io.File;
 
 public class FileManager {
 	
-	public static final String FILENAME = "alumno.txt";
-	public static File file;
 	
-	public static File createFile(String name) {
-		file = new File(FILENAME);
+	public static File createFile(String archivo) {
 		
-		return file;
+		File fichero = new File(archivo);
+		return fichero;
 	}
 	
-	public static boolean existFile(String name) {
-		return new File(FILENAME).exists();
+	public static boolean fileExist(String archivo) {
 		
+		return new File(archivo).exists();
 	}
 
 }
